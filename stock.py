@@ -5,7 +5,7 @@ import datetime
 import matplotlib.pyplot as plt
 import matplotlib 
 from io import BytesIO
-
+ 
 def get_stock_info(maket_type=None):
     base_url =  "http://kind.krx.co.kr/corpgeneral/corpList.do"    
     method = "download"
@@ -30,7 +30,7 @@ def get_ticker_symbol(company_name, maket_type):
     elif maket_type == 'kosdaq':      
         ticker_symbol = code +".KQ" 
     return ticker_symbol
-st.title("주식 정보를 가져오는 웹 앱") 
+st.title(":red[주식 정보를 가져오는 웹 앱]") 
 st.markdown(
     """     <style>
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child{width:250px;}     </style>
@@ -49,18 +49,20 @@ if(clicked == True):
     end_p = date_range[1] + datetime.timedelta(days=1) 
     df = ticker_data.history(start=start_p, end=end_p)
     df.index = df.index.date
-    st.subheader(f"[{stock_name}] 주가 데이터")
+    st.subheader(f":blue[[{stock_name}] 주가 데이터]")
     st.dataframe(df.head())  
     matplotlib.rcParams['font.family'] = 'Malgun Gothic'   
     matplotlib.rcParams['axes.unicode_minus'] = False
     ax = df['Close'].plot(grid=True, figsize=(15, 5)) 
-    ax.set_title("주가(종가) 그래프", fontsize=30)     
-    ax.set_xlabel("기간", fontsize=20)
-    ax.set_ylabel("주가(원)", fontsize=20)
+    ax.set_title("Stock Price Graph", fontsize=25)     
+    ax.set_xlabel("Period", fontsize=15)
+    ax.set_ylabel("Price", fontsize=15)
     plt.xticks(fontsize=15)
     plt.yticks(fontsize=15)     
     fig = ax.get_figure()  
     st.pyplot(fig)
+    st.line_chart(df, y='Close')
+    st.bar_chart(df, y='Close')
     st.markdown("**주가 데이터 파일 다운로드**")     
     csv_data = df.to_csv()  
     excel_data = BytesIO()      
